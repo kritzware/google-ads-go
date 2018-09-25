@@ -17,6 +17,9 @@ run:
 run-debug:
 	GODEBUG=http2debug=2 GRPC_GO_LOG_SEVERITY_LEVEL=info GRPC_GO_LOG_VERBOSITY_LEVEL=2 go run $(ENTRY)
 
+test:
+	go test ./
+
 .SILENT protos:
 	echo "converting protos for version $(ADS_VERSION)"
 	for file in $(PROTO_ROOT_DIR)$(PROTO_SRC_DIR); do \

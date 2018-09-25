@@ -2,14 +2,11 @@ package client
 
 import (
 	"context"
-	"fmt"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-
-	"github.com/kritzware/google-ads-go/types"
 )
 
 const (
@@ -59,12 +56,13 @@ func (g *GoogleAdsClient) GetService(service string) interface{} {
 		panic(err)
 	}
 
-	serviceName := fmt.Sprintf("New%sClient", service)
+	// serviceName := fmt.Sprintf("New%sClient", service)
 
-	var t types.ClientServices
+	// var t types.ClientServices
 	// adsService := reflect.ValueOf(&t).MethodByName(serviceName).Call([]reflect.Value{reflect.Value(g.conn)})
 
-	return adsService
+	// return adsService
+	return nil
 }
 
 // headers := metadata.Pairs(
