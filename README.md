@@ -1,7 +1,8 @@
 # google-ads-go
 
-| Google Ads API version 	| `v0` 	|
-|:------------------------	|:----:	|
+| Google Ads API version 	| `v0` |
+|-|:-:|
+| Build | [![CircleCI](https://circleci.com/gh/kritzware/google-ads-go.svg?style=svg)](https://circleci.com/gh/kritzware/google-ads-go) |
 
 ## Installation
 To install, simply run:
