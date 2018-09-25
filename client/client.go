@@ -2,11 +2,17 @@ package client
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"reflect"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+
+	services "github.com/kritzware/google-ads-go/services"
 )
 
 const (
@@ -42,27 +48,29 @@ func (g *GoogleAdsClient) createGrpcConnection() error {
 	// creds := oauth.NewOauthAccess(client.Token)
 	// grpc.WithPerRPCCredentials(creds)
 	err := g.refreshToken()
+	if err != nil {
+		return err
+	}
 	conn, err := grpc.Dial(address, grpc.WithTransportCredentials(credentials.NewClientTLSFromCert(nil, "")))
 	if err != nil {
 		return err
 	}
 	g.conn = conn
-	return err
+	return nil
 }
 
-func (g *GoogleAdsClient) GetService(service string) interface{} {
+func (g *GoogleAdsClient) GetService(service string) reflect.Value {
 	err := g.createGrpcConnection()
 	if err != nil {
 		panic(err)
 	}
+	var googleAdsServices services.GoogleAdsServices
 
-	// serviceName := fmt.Sprintf("New%sClient", service)
+	serviceName := fmt.Sprintf("New%sClient", service)
+	serviceParams := []reflect.Value{reflect.ValueOf(g.conn)}
 
-	// var t types.ClientServices
-	// adsService := reflect.ValueOf(&t).MethodByName(serviceName).Call([]reflect.Value{reflect.Value(g.conn)})
-
-	// return adsService
-	return nil
+	relService := reflect.ValueOf(&googleAdsServices).MethodByName(serviceName)
+	return relService.Call(serviceParams)[0]
 }
 
 // headers := metadata.Pairs(
@@ -85,4 +93,28 @@ func NewGoogleAdsClient(args *GoogleAdsClientArgs) *GoogleAdsClient {
 		token:          initialToken,
 		developerToken: args.DeveloperToken,
 	}
+}
+
+type GoogleAdsStorageConfig struct {
+	ClientID       string `json:"client_id"`
+	ClientSecret   string `json:"client_secret"`
+	RefreshToken   string `json:"refresh_token"`
+	DeveloperToken string `json:"developer_token"`
+}
+
+func NewGoogleAdsClientFromStorage(filepath string) (*GoogleAdsClient, error) {
+	file, err := ioutil.ReadFile(filepath)
+	if err != nil {
+		return nil, err
+	}
+	var g GoogleAdsStorageConfig
+	json.Unmarshal(file, &g)
+
+	client := NewGoogleAdsClient(&GoogleAdsClientArgs{
+		ClientID:       g.ClientID,
+		ClientSecret:   g.ClientSecret,
+		RefreshToken:   g.RefreshToken,
+		DeveloperToken: g.DeveloperToken,
+	})
+	return client, nil
 }

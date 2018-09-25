@@ -7,15 +7,12 @@ import (
 )
 
 func main() {
-	client := client.NewGoogleAdsClient(&client.GoogleAdsClientArgs{
-		ClientID:       "",
-		ClientSecret:   "",
-		DeveloperToken: "",
-		RefreshToken:   "",
-	})
+	client, err := client.NewGoogleAdsClientFromStorage("google-ads.json")
+	if err != nil {
+		panic(err)
+	}
 
 	service := client.GetService("GoogleAdsService")
-
 	fmt.Printf("%+v\n", service)
 
 	// request := services.SearchGoogleAdsRequest{
