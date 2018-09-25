@@ -1,5 +1,7 @@
 # google-ads-go
 
+**Note: This library is not ready for production yet**
+
 | Google Ads API version 	| `v0` |
 |-|:-:|
 | Build | [![CircleCI](https://circleci.com/gh/kritzware/google-ads-go.svg?style=svg)](https://circleci.com/gh/kritzware/google-ads-go) |
