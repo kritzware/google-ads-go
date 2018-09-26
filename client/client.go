@@ -63,10 +63,18 @@ func (g *GoogleAdsClient) createGrpcConnection() error {
 	return nil
 }
 
+// TODO: Just change this to a public field
 // Conn returns a pointer to the clients gRPC connection
 func (g *GoogleAdsClient) Conn() *grpc.ClientConn {
 	return g.conn
 }
+
+// TODO: Add metadata
+// headers := metadata.Pairs(	// NewGoogleAdsClient creates a new client with specified credentials
+// 	"Authorization", fmt.Sprintf("Bearer %s", client.Token.AccessToken),
+// 	"developer-token", client.DeveloperToken,
+// )
+// ctx := metadata.NewOutgoingContext(context.Background(), headers)
 
 // NewGoogleAdsClient creates a new client with specified credentials
 func NewGoogleAdsClient(args *GoogleAdsClientArgs) *GoogleAdsClient {
