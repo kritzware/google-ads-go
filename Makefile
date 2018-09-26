@@ -28,7 +28,7 @@ test:
 	done; \
 	echo "built proto files to $$(basename $(PROTO_OUT_DIR))"
 
-.SILENT clean-protos:
+clean-protos:
 	rm -rf protos/*
 
 .PHONY: protos

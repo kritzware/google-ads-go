@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	gads "github.com/kritzware/google-ads-go/client"
-	"github.com/kritzware/google-ads-go/services"
 )
 
 func main() {
@@ -13,11 +12,20 @@ func main() {
 		panic(err)
 	}
 
-	campaignService := services.NewCampaignService(client.Conn())
-	fmt.Printf("service: %+v\n", campaignService)
+	campaignService := client.NewCampaignService()
+	fmt.Printf("%+v\n", campaignService)
 
-	campaign := campaignService.GetCampaign()
-	fmt.Printf("campaign: %+v\n", campaign)
+	campaign := campaignService.GetCampaign("3827277046", "954375723")
+	fmt.Printf("%+v\n", campaign)
+
+	// service := client.GetService("CampaignService")
+	// fmt.Printf("%+v\n", service)
+
+	// campaignService := services.NewCampaignService(client.Conn())
+	// fmt.Printf("service: %+v\n", campaignService)
+
+	// campaign := campaignService.GetCampaign()
+	// fmt.Printf("campaign: %+v\n", campaign)
 
 	// load via string
 	// service := client.NewGoogleAdsService(&client)
