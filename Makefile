@@ -2,7 +2,7 @@ ADS_VERSION=v0
 PROTO_ROOT_DIR=googleapis/
 PROTO_SRC_DIR=/google/ads/googleads/$(ADS_VERSION)/**/*.proto
 PROTO_OUT_DIR=$$GOPATH/src/github.com/kritzware/google-ads-go/protos/
-PKG_PATH=paths=import
+PKG_PATH=paths=source_relative
 PROTOC_GO_ARGS=--go_out=plugins=grpc,$(PKG_PATH):$(PROTO_OUT_DIR)
 
 ENTRY=main.go
@@ -28,16 +28,7 @@ test:
 	done; \
 	echo "built proto files to $$(basename $(PROTO_OUT_DIR))"
 
-clean-protos:
+.SILENT clean-protos:
 	rm -rf protos/*
 
 .PHONY: protos
-
-# proto:
-# 	protoc -I=$(SRC_DIR) --go_out=plugins=grpc:$(PROTO_OUT_DIR) $(SRC_DIR)$(SRC_INPUT)
-
-# .SILENT protos: clean-protos
-# 	echo "converting all protos in $(SRC_INPUT)"; \
-# 	for file in $(SRC_DIR)$(SRC_INPUT); do \
-# 		protoc -I=$(SRC_DIR) --go_out=plugins=grpc,$(PKG_PATH):$(PROTO_OUT_DIR) $$file; \
-# 	done; \
