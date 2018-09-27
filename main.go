@@ -13,10 +13,19 @@ func main() {
 	}
 
 	campaignService := client.NewCampaignService()
-	fmt.Printf("%+v\n", campaignService)
+	adGroupService := client.NewAdGroupService()
 
-	campaign := campaignService.GetCampaign("3827277046", "954375723")
-	fmt.Printf("%+v\n", campaign)
+	campaign, err := campaignService.GetCampaign("3827277046", "954375723")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Name: %s, Status: %s\n", campaign.Name.Value, campaign.ServingStatus)
+
+	adGroup, err := adGroupService.GetAdGroup("3827277046", "51149598601")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(adGroup)
 
 	// service := client.GetService("CampaignService")
 	// fmt.Printf("%+v\n", service)

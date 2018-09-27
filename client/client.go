@@ -121,17 +121,12 @@ func (g *GoogleAdsClient) Conn() *grpc.ClientConn {
 	return g.conn
 }
 
-// func (g *GoogleAdsClient) GetService(serviceName string) interface{} {
-// 	var service interface {
-// 		GetCampaign(context.Context, *gaServices.GetCampaignRequest, ...grpc.CallOption) (*gaResources.Campaign, error)
-// 	}
-// 	switch serviceName {
-// 	case "CampaignService":
-// 		service = gaServices.NewCampaignServiceClient(g.conn)
-// 	}
-// 	return service
-// }
-
+// NewCampaignService
 func (g *GoogleAdsClient) NewCampaignService() *services.CampaignService {
 	return services.NewCampaignService(g.conn, g.ctx)
+}
+
+// NewAdGroupService
+func (g *GoogleAdsClient) NewAdGroupService() *services.AdGroupService {
+	return services.NewAdGroupService(g.conn, g.ctx)
 }

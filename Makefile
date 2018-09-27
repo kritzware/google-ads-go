@@ -26,6 +26,7 @@ test:
 		echo "converting proto $$(basename $$file)"; \
 		protoc -I=$(PROTO_ROOT_DIR) $(PROTOC_GO_ARGS) $$file; \
 	done; \
+	sh ./fix-package-paths.sh; \
 	echo "built proto files to $$(basename $(PROTO_OUT_DIR))"
 
 clean-protos:
