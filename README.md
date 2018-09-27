@@ -31,17 +31,18 @@ func main() {
   if err != nil {
     panic(err)
   }
-
+  
+  customerID := "3827277046"
   campaignService := client.NewCampaignService()
   adGroupService := client.NewAdGroupService()
 
-  campaign, err := campaignService.GetCampaign("3827277046", "954375723")
+  campaign, err := campaignService.GetCampaign(customerID, "954375723")
   if err != nil {
     panic(err)
   }
   fmt.Printf("Name: %s, Status: %s\n", campaign.Name.Value, campaign.ServingStatus)
 
-  adGroup, err := adGroupService.GetAdGroup("3827277046", "51149598601")
+  adGroup, err := adGroupService.GetAdGroup(customerID, "51149598601")
   if err != nil {
     panic(err)
   }
