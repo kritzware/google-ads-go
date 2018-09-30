@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/kritzware/google-ads-go/services"
 	"golang.org/x/net/context"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
@@ -25,16 +24,19 @@ type GoogleAdsClient struct {
 	conn           *grpc.ClientConn
 	developerToken string
 	ctx            context.Context
+
+	// GoogleAdsService GoogleAdsServiceClient
+	// CampaignService  CampaignServiceClient
 }
 
-type GoogleAdsClientArgs struct {
+type GoogleAdsClientParams struct {
 	ClientID       string
 	ClientSecret   string
 	DeveloperToken string
 	RefreshToken   string
 }
 
-type googleAdsStorageConfig struct {
+type googleAdsStorageParams struct {
 	ClientID       string `json:"client_id"`
 	ClientSecret   string `json:"client_secret"`
 	RefreshToken   string `json:"refresh_token"`
@@ -42,7 +44,7 @@ type googleAdsStorageConfig struct {
 }
 
 // NewGoogleAdsClient creates a new client with specified credentials
-func NewGoogleAdsClient(args *GoogleAdsClientArgs) (*GoogleAdsClient, error) {
+func NewGoogleAdsClient(args *GoogleAdsClientParams) (*GoogleAdsClient, error) {
 	credentials := &oauth2.Config{
 		ClientID:     args.ClientID,
 		ClientSecret: args.ClientSecret,
@@ -60,6 +62,10 @@ func NewGoogleAdsClient(args *GoogleAdsClientArgs) (*GoogleAdsClient, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// c.GoogleAdsService = NewGoogleAdsServiceClient(c.conn)
+	// c.CampaignService = NewCampaignServiceClient(c.conn)
+
 	return c, nil
 }
 
@@ -69,10 +75,10 @@ func NewGoogleAdsClientFromStorage(filepath string) (*GoogleAdsClient, error) {
 	if err != nil {
 		return nil, err
 	}
-	var g googleAdsStorageConfig
+	var g googleAdsStorageParams
 	json.Unmarshal(file, &g)
 
-	client, err := NewGoogleAdsClient(&GoogleAdsClientArgs{
+	client, err := NewGoogleAdsClient(&GoogleAdsClientParams{
 		ClientID:       g.ClientID,
 		ClientSecret:   g.ClientSecret,
 		RefreshToken:   g.RefreshToken,
@@ -115,18 +121,12 @@ func (g *GoogleAdsClient) createGrpcConnection() error {
 	return nil
 }
 
-// TODO: Just change this to a public field
 // Conn returns a pointer to the clients gRPC connection
 func (g *GoogleAdsClient) Conn() *grpc.ClientConn {
 	return g.conn
 }
 
-// NewCampaignService
-func (g *GoogleAdsClient) NewCampaignService() *services.CampaignService {
-	return services.NewCampaignService(g.conn, g.ctx)
-}
-
-// NewAdGroupService
-func (g *GoogleAdsClient) NewAdGroupService() *services.AdGroupService {
-	return services.NewAdGroupService(g.conn, g.ctx)
+// Context returns the context of the client
+func (g *GoogleAdsClient) Context() context.Context {
+	return g.ctx
 }

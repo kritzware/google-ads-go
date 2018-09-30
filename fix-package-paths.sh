@@ -1,12 +1,25 @@
-MATCH="google\/ads\/googleads\/v0\/"
-REPLACE="github.com\/kritzware\/google-ads-go\/protos\/google\/ads\/googleads\/v0\/"
-
 PACKAGES=('common' 'enums' 'errors' 'resources' 'services')
 
-echo "fixing package paths"
-for file in ./protos/google/ads/googleads/v0/**/*.pb.go; do
+function fix_package_path() {
+    FILE=$1
+    PACKAGE=$2
+    MATCH="google\/ads\/googleads\/v0\/"
+    REPLACE="github.com\/kritzware\/google-ads-go\/"
+    sed -i "" "s/$MATCH$PACKAGE/$REPLACE$PACKAGE/g" $FILE
+}
+
+function fix_package_name() {
+    FILE=$1
+    PACKAGE=$2
+    sed -i "" "s/google_ads_googleads_v0_$PACKAGE/$PACKAGE/g" $FILE
+}
+
+echo "fixing packages"
+for file in ./google/ads/googleads/v0/**/*.pb.go; do
     for p in "${PACKAGES[@]}"; do
-        sed -i "" "s/$MATCH$p/$REPLACE$p/g" $file
+        fix_package_path $file $p
+        fix_package_name $file $p
     done
 done
-echo "finished fixing package paths"
+mv ./google/ads/googleads/v0/* ./
+echo "finished fixing packages"
