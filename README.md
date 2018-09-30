@@ -23,30 +23,32 @@ package main
 import (
   "fmt"
 
-  gads "github.com/kritzware/google-ads-go/client"
+  "github.com/kritzware/google-ads-go/ads"
+  "github.com/kritzware/google-ads-go/services"
 )
 
 func main() {
-  client, err := gads.NewGoogleAdsClientFromStorage("google-ads.json")
+  // Create a client from credentials file
+  client, err := ads.NewClientFromStorage("google-ads.json")
   if err != nil {
     panic(err)
   }
   
-  customerID := "3827277046"
-  campaignService := client.NewCampaignService()
-  adGroupService := client.NewAdGroupService()
-
-  campaign, err := campaignService.GetCampaign(customerID, "954375723")
-  if err != nil {
-    panic(err)
+  // Load the "GoogleAds" service
+  googleAdsService := services.NewGoogleAdsServiceClient(client.Conn())
+  
+  // Create a search request
+  request := services.SearchGoogleAdsRequest{
+    CustomerId: "2984242032",
+    Query:      "SELECT campaign.id, campaign.name FROM campaign ORDER BY campaign.id",
   }
-  fmt.Printf("Name: %s, Status: %s\n", campaign.Name.Value, campaign.ServingStatus)
-
-  adGroup, err := adGroupService.GetAdGroup(customerID, "51149598601")
-  if err != nil {
-    panic(err)
+  
+  // Get the results
+  response, err := googleAdsService.Search(client.Context(), &request)
+  for _, row := range response.Results {
+    campaign := row.Campaign
+    fmt.Printf("id: %d, name: %s\n", campaign.Id.Value, campaign.Name.Value)
   }
-  fmt.Println(adGroup)
 }
 ```
 
