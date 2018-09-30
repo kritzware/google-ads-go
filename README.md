@@ -1,10 +1,13 @@
 # google-ads-go
 
-**Note: This library is not ready for production yet**
-
 | Google Ads API version 	| `v0` |
 |-|:-:|
 | Build | [![CircleCI](https://circleci.com/gh/kritzware/google-ads-go.svg?style=svg)](https://circleci.com/gh/kritzware/google-ads-go) |
+
+## Features
+- Fully matches the latest [Google Ads API Reference](https://developers.google.com/google-ads/api/reference/rpc/)
+- Implemented via [gRPC](https://grpc.io/) with [Protocol Buffers](https://developers.google.com/protocol-buffers/)
+- CLI utils and API for generating and refreshing Google Ads credentials
 
 ## Installation
 To install, simply run:
