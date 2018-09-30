@@ -9,12 +9,57 @@
 ## Installation
 To install, simply run:
 ```bash
-$ go get github.com/kritzware/google-ads-go
+$ go get -d github.com/kritzware/google-ads-go
 ```
 Make sure your PATH includes the $GOPATH/bin directory if you want to use the CLI utils:
 ```bash
 export PATH=$PATH:$GOPATH/bin
 ````
+
+## Example
+```go
+package main
+
+import (
+  "fmt"
+
+  gads "github.com/kritzware/google-ads-go/client"
+)
+
+func main() {
+  client, err := gads.NewGoogleAdsClientFromStorage("google-ads.json")
+  if err != nil {
+    panic(err)
+  }
+  
+  customerID := "3827277046"
+  campaignService := client.NewCampaignService()
+  adGroupService := client.NewAdGroupService()
+
+  campaign, err := campaignService.GetCampaign(customerID, "954375723")
+  if err != nil {
+    panic(err)
+  }
+  fmt.Printf("Name: %s, Status: %s\n", campaign.Name.Value, campaign.ServingStatus)
+
+  adGroup, err := adGroupService.GetAdGroup(customerID, "51149598601")
+  if err != nil {
+    panic(err)
+  }
+  fmt.Println(adGroup)
+}
+```
+
+When using the `NewGoogleAdsClientFromStorage` method, you must provide a path to a valid `google-ads.json` file (containing your Google Ads API credentials).
+```json
+{
+    "client_id": "YOUR_CLIENT_ID",
+    "client_secret": "YOUR_CLIENT_SECRET",
+    "refresh_token": "YOUR_REFRESH_TOKEN",
+    "developer_token": "YOUR_DEVELOPER_TOKEN"
+}
+
+```
 
 ## Contributing
 ### Compiling
