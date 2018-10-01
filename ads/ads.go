@@ -71,7 +71,7 @@ func NewClientFromStorage(filepath string) (*GoogleAdsClient, error) {
 	var g googleAdsStorageParams
 	json.Unmarshal(file, &g)
 
-	client, err := NewGoogleAdsClient(&GoogleAdsClientParams{
+	client, err := NewClient(&GoogleAdsClientParams{
 		ClientID:       g.ClientID,
 		ClientSecret:   g.ClientSecret,
 		RefreshToken:   g.RefreshToken,
