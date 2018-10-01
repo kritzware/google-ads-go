@@ -40,8 +40,8 @@ type googleAdsStorageParams struct {
 	DeveloperToken string `json:"developer_token"`
 }
 
-// NewGoogleAdsClient creates a new client with specified credentials
-func NewGoogleAdsClient(args *GoogleAdsClientParams) (*GoogleAdsClient, error) {
+// NewClient creates a new client with specified credentials
+func NewClient(args *GoogleAdsClientParams) (*GoogleAdsClient, error) {
 	credentials := &oauth2.Config{
 		ClientID:     args.ClientID,
 		ClientSecret: args.ClientSecret,
