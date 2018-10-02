@@ -21,21 +21,21 @@ var (
 
 func TestNewCredentials(t *testing.T) {
 	creds := NewCredentials(clientID, clientSecret)
-	if creds.ClientID != clientID+"123" {
-		t.Fatalf("Credentials client id does not match. expected=%s, got=%s", clientID, creds.ClientID)
+	if creds.ClientID != clientID {
+		t.Fatalf("Credentials client id does not match")
 	}
 	if creds.ClientSecret != clientSecret {
-		t.Fatalf("Credentials client secret does not match. expected=%s, got=%s", clientSecret, creds.ClientSecret)
+		t.Fatalf("Credentials client secret does not match")
 	}
 }
 
 func TestNewPartialToken(t *testing.T) {
 	token := NewPartialToken(refreshToken)
 	if token.AccessToken != "" {
-		t.Fatalf("Partial token should have no access token. expected=nil, got=%s", token.AccessToken)
+		t.Fatal("Partial token should have no access token")
 	}
 	if token.RefreshToken != refreshToken {
-		t.Fatalf("Refresh token does not match partial token. expected=%s, got=%s", refreshToken, token.RefreshToken)
+		t.Fatal("Refresh token does not match partial token")
 	}
 }
 
@@ -64,7 +64,7 @@ func TestRefreshToken(t *testing.T) {
 
 	token, _ = RefreshToken(creds, partialToken, ctx)
 	if token != nil {
-		t.Fatalf("Using an optional context with timeout should cause token refresh to halt")
+		t.Fatal("Using an optional context with timeout should cause token refresh to halt")
 	}
 }
 
