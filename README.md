@@ -2,7 +2,8 @@
 
 | Google Ads API version 	| `v0` |
 |-|:-:|
-| Build | [![CircleCI](https://circleci.com/gh/kritzware/google-ads-go.svg?style=svg)](https://circleci.com/gh/kritzware/google-ads-go) |
+| Build | [![CircleCI](https://circleci.com/gh/kritzware/google-ads-go.svg?style=shield)](https://circleci.com/gh/kritzware/google-ads-go) |
+| Release | ![Release](https://img.shields.io/github/release/kritzware/google-ads-go.svg) |
 
 ## Features
 - Fully matches the latest [Google Ads API Reference](https://developers.google.com/google-ads/api/reference/rpc/)
