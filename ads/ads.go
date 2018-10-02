@@ -2,19 +2,15 @@ package ads
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 
+	"github.com/kritzware/google-ads-go/auth"
 	"golang.org/x/net/context"
 	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/google"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc/metadata"
 )
 
 const (
-	address        string = "googleads.googleapis.com:443"
 	defaultVersion string = "v0"
 )
 
@@ -40,25 +36,30 @@ type googleAdsStorageParams struct {
 	DeveloperToken string `json:"developer_token"`
 }
 
-// NewClient creates a new client with specified credentials
-func NewClient(args *GoogleAdsClientParams) (*GoogleAdsClient, error) {
-	credentials := &oauth2.Config{
-		ClientID:     args.ClientID,
-		ClientSecret: args.ClientSecret,
-		Endpoint:     google.Endpoint,
-	}
-	initialToken := &oauth2.Token{
-		RefreshToken: args.RefreshToken,
-	}
+// NewClient creates a new client with specified credential params
+func NewClient(params *GoogleAdsClientParams) (*GoogleAdsClient, error) {
+	credentials := auth.NewCredentials(params.ClientID, params.ClientSecret)
+	initialToken := auth.NewPartialToken(params.RefreshToken)
+
 	c := &GoogleAdsClient{
 		credentials:    credentials,
 		token:          initialToken,
-		developerToken: args.DeveloperToken,
+		developerToken: params.DeveloperToken,
 	}
-	err := c.createGrpcConnection()
+
+	newToken, err := auth.RefreshToken(c.credentials, c.token)
 	if err != nil {
 		return nil, err
 	}
+	c.token = newToken
+
+	conn, ctx, err := auth.NewGrpcConnection(c.token, c.developerToken)
+	if err != nil {
+		return nil, err
+	}
+	c.conn = conn
+	c.ctx = ctx
+
 	return c, nil
 }
 
@@ -80,40 +81,6 @@ func NewClientFromStorage(filepath string) (*GoogleAdsClient, error) {
 	return client, err
 }
 
-func (g *GoogleAdsClient) refreshToken() error {
-	tok := g.credentials.TokenSource(context.Background(), g.token)
-	newToken, err := tok.Token()
-	if err != nil {
-		return err
-	}
-	g.token = newToken
-	return nil
-}
-
-func (g *GoogleAdsClient) createGrpcConnection() error {
-	// TODO: Also pass token creds
-	// creds := oauth.NewOauthAccess(g.token)
-	// grpc.WithPerRPCCredentials(creds)
-	err := g.refreshToken()
-	if err != nil {
-		return err
-	}
-
-	headers := metadata.Pairs(
-		"Authorization", fmt.Sprintf("Bearer %s", g.token.AccessToken),
-		"developer-token", g.developerToken,
-	)
-	ctx := metadata.NewOutgoingContext(context.Background(), headers)
-	g.ctx = ctx
-
-	conn, err := grpc.Dial(address, grpc.WithTransportCredentials(credentials.NewClientTLSFromCert(nil, "")))
-	if err != nil {
-		return err
-	}
-	g.conn = conn
-	return nil
-}
-
 // Conn returns a pointer to the clients gRPC connection
 func (g *GoogleAdsClient) Conn() *grpc.ClientConn {
 	return g.conn
@@ -122,4 +89,9 @@ func (g *GoogleAdsClient) Conn() *grpc.ClientConn {
 // Context returns the context of the client
 func (g *GoogleAdsClient) Context() context.Context {
 	return g.ctx
+}
+
+// TokenIsValid returns a bool indicating if the generated access token is valid
+func (g *GoogleAdsClient) TokenIsValid() bool {
+	return g.token.Valid()
 }

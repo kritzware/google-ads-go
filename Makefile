@@ -18,7 +18,7 @@ run-debug:
 	GODEBUG=http2debug=2 GRPC_GO_LOG_SEVERITY_LEVEL=info GRPC_GO_LOG_VERBOSITY_LEVEL=2 go run $(ENTRY)
 
 test:
-	go test ./
+	go test -v -cover ./...
 
 .SILENT protos: clean-protos clean-gen-protos
 	echo "converting protos for version $(ADS_VERSION)"
