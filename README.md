@@ -67,6 +67,18 @@ When using the `NewGoogleAdsClientFromStorage` method, you must provide a path t
 
 ```
 
+## CLI
+This library also provides some CLI utilities for generating/refreshing Google OAuth2 credentials. The newly generated token will be printed to stdout, as well as the expiry timestamp.
+#### Generate Access Token from Refresh token
+```bash
+$ gads refresh -client-id CLIENT_ID -client-secret CLIENT_SECRET -refresh-token REFRESH_TOKEN
+```
+#### Generate Access Token from JSON credentials file
+```bash
+$ gads refresh -file credentials.json
+```
+Additionally, you can use the `-help` flag for more information: `gads refresh --help`
+
 ## Contributing
 ### Compiling
 All build scripts use `Makefile`
