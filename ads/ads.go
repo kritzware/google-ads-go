@@ -65,6 +65,16 @@ func NewClient(params *GoogleAdsClientParams) (*GoogleAdsClient, error) {
 
 // NewClientFromStorage creates a new client instance from specified "google-ads.json" file
 func NewClientFromStorage(filepath string) (*GoogleAdsClient, error) {
+	params, err := ReadCredentialsFile(filepath)
+	if err != nil {
+		return nil, err
+	}
+	client, err := NewClient(params)
+	return client, err
+}
+
+// ReadCredentialsFile reads a credentials JSON file and returns the exported config
+func ReadCredentialsFile(filepath string) (*GoogleAdsClientParams, error) {
 	file, err := ioutil.ReadFile(filepath)
 	if err != nil {
 		return nil, err
@@ -72,13 +82,12 @@ func NewClientFromStorage(filepath string) (*GoogleAdsClient, error) {
 	var g googleAdsStorageParams
 	json.Unmarshal(file, &g)
 
-	client, err := NewClient(&GoogleAdsClientParams{
+	return &GoogleAdsClientParams{
 		ClientID:       g.ClientID,
 		ClientSecret:   g.ClientSecret,
 		RefreshToken:   g.RefreshToken,
 		DeveloperToken: g.DeveloperToken,
-	})
-	return client, err
+	}, nil
 }
 
 // Conn returns a pointer to the clients gRPC connection
