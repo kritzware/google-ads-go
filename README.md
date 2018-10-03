@@ -15,7 +15,7 @@ To install, simply run:
 ```bash
 $ go get -d github.com/kritzware/google-ads-go
 ```
-Make sure your PATH includes the $GOPATH/bin directory if you want to use the CLI utils:
+Make sure your PATH includes the $GOPATH/bin directory if you want to use the [CLI utils](https://github.com/kritzware/google-ads-go#cli):
 ```bash
 export PATH=$PATH:$GOPATH/bin
 ````
