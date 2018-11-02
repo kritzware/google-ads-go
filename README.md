@@ -1,6 +1,6 @@
 # google-ads-go
 
-| Google Ads API version 	| `v0_3` |
+| Google Ads API version 	| [`v0_3`](https://developers.google.com/google-ads/api/docs/release-notes#030_2018-08-29) |
 |-|:-:|
 | Build | [![CircleCI](https://circleci.com/gh/kritzware/google-ads-go.svg?style=shield)](https://circleci.com/gh/kritzware/google-ads-go) |
 | Release | ![Release](https://img.shields.io/github/release/kritzware/google-ads-go.svg) |
@@ -92,6 +92,9 @@ $ make run
 ```bash
 $ make run-debug
 ```
+
+## Changelog
+To see the changes between Google Ads API versions, take a look at the official [Google Ads API Release Notes](https://developers.google.com/google-ads/api/docs/release-notes).
 
 ### Manually Building Protos
 Building `.pb.go` files from the original `googleads` protos should only be done when updating to a new Google Ads version.
