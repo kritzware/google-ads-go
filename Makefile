@@ -40,4 +40,12 @@ clean-protos:
 clean-gen-protos:
 	rm -rf google/
 
-.PHONY: protos
+clone-googleapis:
+	cd $(PROTO_ROOT_DIR)
+	git submodule update --init --recursive
+
+update-googleapis:
+	cd $(PROTO_ROOT_DIR)
+	git submodule update --recursive --remote
+
+.PHONY: protos clone-googleapis update-googleapis
