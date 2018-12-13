@@ -3,7 +3,7 @@ PACKAGES=('common' 'enums' 'errors' 'resources' 'services')
 function fix_package_path() {
     FILE=$1
     PACKAGE=$2
-    MATCH="google\/ads\/googleads\/v0\/"
+    MATCH="google.golang.org\/genproto\/googleapis\/ads\/googleads\/v0\/"
     REPLACE="github.com\/kritzware\/google-ads-go\/"
     sed -i "" "s/$MATCH$PACKAGE/$REPLACE$PACKAGE/g" $FILE
 }
