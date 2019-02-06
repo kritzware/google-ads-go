@@ -46,8 +46,8 @@ func RefreshToken(creds *oauth2.Config, token *oauth2.Token, ctx ...context.Cont
 }
 
 // NewGrpcConnection creates a new authenticated grpc client and context with authentication headers
-func NewGrpcConnection(token *oauth2.Token, developerToken string) (*grpc.ClientConn, context.Context, error) {
-	headers := createHeaders(token.AccessToken, developerToken)
+func NewGrpcConnection(token *oauth2.Token, developerToken string, loginCustomerID string) (*grpc.ClientConn, context.Context, error) {
+	headers := createHeaders(token.AccessToken, developerToken, loginCustomerID)
 	ctx := metadata.NewOutgoingContext(context.Background(), headers)
 
 	// TODO: Also pass token creds
@@ -61,9 +61,12 @@ func NewGrpcConnection(token *oauth2.Token, developerToken string) (*grpc.Client
 	return conn, ctx, nil
 }
 
-func createHeaders(accessToken string, developerToken string) metadata.MD {
+// TODO: Add support for login-customer-id
+// https://developers.google.com/google-ads/api/docs/concepts/call-structure#login-customer-id
+func createHeaders(accessToken string, developerToken string, loginCustomerID string) metadata.MD {
 	return metadata.Pairs(
 		"Authorization", fmt.Sprintf("Bearer %s", accessToken),
 		"developer-token", developerToken,
+		"login-customer-id", loginCustomerID,
 	)
 }

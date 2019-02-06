@@ -13,10 +13,11 @@ import (
 )
 
 var (
-	clientID       = os.Getenv("GADS_CLIENT_ID")
-	clientSecret   = os.Getenv("GADS_CLIENT_SECRET")
-	developerToken = os.Getenv("GADS_DEVELOPER_TOKEN")
-	refreshToken   = os.Getenv("GADS_REFRESH_TOKEN")
+	clientID        = os.Getenv("GADS_CLIENT_ID")
+	clientSecret    = os.Getenv("GADS_CLIENT_SECRET")
+	developerToken  = os.Getenv("GADS_DEVELOPER_TOKEN")
+	refreshToken    = os.Getenv("GADS_REFRESH_TOKEN")
+	loginCustomerID = "123"
 )
 
 func TestNewCredentials(t *testing.T) {
@@ -70,7 +71,7 @@ func TestRefreshToken(t *testing.T) {
 
 func TestNewGrpcConnection(t *testing.T) {
 	token, _ := createTestToken()
-	conn, _, err := NewGrpcConnection(token, developerToken)
+	conn, _, err := NewGrpcConnection(token, developerToken, loginCustomerID)
 	if err != nil {
 		t.Fatalf("gRPC connection should not error when using valid credentials. got=%s", err.Error())
 	}
@@ -81,16 +82,19 @@ func TestNewGrpcConnection(t *testing.T) {
 
 func TestCreateHeaders(t *testing.T) {
 	token, _ := createTestToken()
-	headers := createHeaders(token.AccessToken, developerToken)
+	headers := createHeaders(token.AccessToken, developerToken, loginCustomerID)
 
-	if headers.Len() != 2 {
-		t.Fatalf("Metadata headers should have 2 items. expected=2, got=%d", headers.Len())
+	if headers.Len() != 3 {
+		t.Fatalf("Metadata headers should have 3 items. expected=2, got=%d", headers.Len())
 	}
 	if headers.Get("Authorization")[0] == "" {
 		t.Fatalf("Metadata headers must have an authorization key")
 	}
 	if headers.Get("developer-token")[0] != developerToken {
 		t.Fatalf("Metadata header \"developer-token\" does not match specified developerToken")
+	}
+	if headers.Get("login-customer-id")[0] != loginCustomerID {
+		t.Fatalf("Metadata header \"login-customer-id\" does not match specified loginCustomerID")
 	}
 }
 

@@ -65,3 +65,23 @@ func TestNewClientErrors(t *testing.T) {
 		t.Fatalf("NewClient should return 401 Unauthorized when no Client credentials are specified. expected=%s, got=%s", "401 Unauthorized", err.Error())
 	}
 }
+
+func TestUsingLoginCustomerID(t *testing.T) {
+	client, _ := NewClient(&GoogleAdsClientParams{
+		ClientID:        clientID,
+		ClientSecret:    clientSecret,
+		DeveloperToken:  developerToken,
+		RefreshToken:    refreshToken,
+		LoginCustomerID: "123",
+	})
+	if client.loginCustomerID != "123" {
+		t.Fatalf("client.loginCustomerID should be used when specified.")
+	}
+}
+
+func TestNewClientFromStorage(t *testing.T) {
+	_, err := NewClientFromStorage("./auth_test.json")
+	if err == nil {
+		t.Fatal("NewClientFromStorage should return an error when using invalid oauth credentials")
+	}
+}
