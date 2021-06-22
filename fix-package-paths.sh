@@ -21,3 +21,11 @@ for file in ./google.golang.org/genproto/googleapis/ads/googleads/v8/**/*.pb.go;
         fix_package_name $file $p
     done
 done
+
+echo "fixing client"
+for file in ./gads/*.go; do
+    for p in "${PACKAGES[@]}"; do
+        fix_package_path $file $p
+        fix_package_name $file $p
+    done
+done

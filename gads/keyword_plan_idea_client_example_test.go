@@ -21,7 +21,7 @@ import (
 
 	gads "github.com/kritzware/google-ads-go"
 	"google.golang.org/api/iterator"
-	servicespb "google.golang.org/genproto/googleapis/ads/googleads/v8/services"
+	servicespb "github.com/kritzware/google-ads-go/services"
 )
 
 func ExampleNewKeywordPlanIdeaClient() {

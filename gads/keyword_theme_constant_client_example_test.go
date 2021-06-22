@@ -20,7 +20,7 @@ import (
 	"context"
 
 	gads "github.com/kritzware/google-ads-go"
-	servicespb "google.golang.org/genproto/googleapis/ads/googleads/v8/services"
+	servicespb "github.com/kritzware/google-ads-go/services"
 )
 
 func ExampleNewKeywordThemeConstantClient() {
