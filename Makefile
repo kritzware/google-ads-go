@@ -1,51 +1,40 @@
-ADS_VERSION=v0
-PROTO_ROOT_DIR=googleapis/
-PROTO_SRC_DIR=/google/ads/googleads/$(ADS_VERSION)/**/*.proto
-PROTO_OUT_DIR=$$GOPATH/src/github.com/kritzware/google-ads-go/
-PKG_PATH=paths=source_relative
-PROTOC_GO_ARGS=--go_out=plugins=grpc,$(PKG_PATH):$(PROTO_OUT_DIR)
 
-ENTRY=main.go
-BIN=gads
+
+# protos:
+# 	sh ./gapic.sh \
+# 		--image gcr.io/gapic-images/gapic-generator-go \
+# 		--in googleapis/google/ads/googleads/v8 \
+# 		--out $(PWD)/build \
+# 		--go-gapic-package "github.com/opteo/google-ads-go"
+
+protos: build clean copy
 
 build:
-	go build -o $$GOPATH/bin/$(BIN) $(ENTRY)
+	DOCKER_BUILDKIT=1 docker build -t opteo/google-ads-go --progress=plain .
+	
+copy:
+	docker create --name gads opteo/google-ads-go
+	docker cp gads:/build $(PWD)
+	docker rm gads
+	chmod 700 $(PWD)/build
+	cp -r build/google.golang.org .
+	cp -r build/github.com/opteo/google-ads-go/* gads/
+	rm -rf build
 
-run:
-	go run $(ENTRY)
+clean:
+	rm -rf build gads && mkdir build gads
 
-run-debug:
-	GODEBUG=http2debug=2 GRPC_GO_LOG_SEVERITY_LEVEL=info GRPC_GO_LOG_VERBOSITY_LEVEL=2 go run $(ENTRY)
+.PHONY: build copy
+	
+# docker run opteo/google-ads-go
 
-test:
-	go test -v -cover ./...
+# # # --mount type=bind,source=</abs/path/to/configs>,destination=/conf,readonly \
 
-.SILENT protos: clean-protos clean-gen-protos
-	echo "converting protos for version $(ADS_VERSION)"
-	for file in $(PROTO_ROOT_DIR)$(PROTO_SRC_DIR); do \
-		echo "converting proto $$(basename $$file)"; \
-		protoc -I=$(PROTO_ROOT_DIR) $(PROTOC_GO_ARGS) $$file; \
-	done; \
-	sh ./fix-package-paths.sh; \
-	rm -rf google/
-	@echo "built proto files to $$(basename $(PROTO_OUT_DIR))"
-
-clean-protos:
-	rm -rf common/
-	rm -rf enums/
-	rm -rf errors/
-	rm -rf resources/
-	rm -rf services/
-
-clean-gen-protos:
-	rm -rf google/
-
-clone-googleapis:
-	cd $(PROTO_ROOT_DIR)
-	git submodule update --init --recursive
-
-update-googleapis:
-	cd $(PROTO_ROOT_DIR)
-	git submodule update --recursive --remote
-
-.PHONY: protos clone-googleapis update-googleapis
+# # protos:
+# # 	docker run \
+# # 		--rm \
+# # 		--user $UID \
+# # 		--mount type=bind,source=<./googleapis/google/ads/googleads/v8>,destination=/.,readonly \
+# # 		--mount type=bind,source=$GOPATH/src,destination=/out/ \
+# # 		gcr.io/gapic-images/gapic-generator-go \
+# # 		--go-gapic-package "github.com/opteo/google-ads-go"
