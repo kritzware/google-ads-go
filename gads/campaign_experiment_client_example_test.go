@@ -19,7 +19,7 @@ package gads_test
 import (
 	"context"
 
-	gads "github.com/opteo/google-ads-go"
+	gads "github.com/kritzware/google-ads-go"
 	"google.golang.org/api/iterator"
 	servicespb "google.golang.org/genproto/googleapis/ads/googleads/v8/services"
 )

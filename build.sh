@@ -2,7 +2,7 @@
 
 protoc -I=/opt/include \
     --go_out=plugins=grpc:/build \
-    --go_gapic_opt 'go-gapic-package=github.com/opteo/google-ads-go;gads' \
+    --go_gapic_opt 'go-gapic-package=github.com/kritzware/google-ads-go;gads' \
     --go_gapic_opt 'api-service-config=/opt/include/google/ads/googleads/v8/googleads_v8.yaml' \
     --go_gapic_opt 'grpc-service-config=/opt/include/google/ads/googleads/v8/googleads_grpc_service_config.json' \
     --go_gapic_out=/build \

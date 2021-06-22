@@ -18,7 +18,7 @@ copy:
 	docker rm gads
 	chmod 700 $(PWD)/build
 	cp -r build/google.golang.org .
-	cp -r build/github.com/opteo/google-ads-go/* gads/
+	cp -r build/github.com/kritzware/google-ads-go/* gads/
 	rm -rf build
 
 clean:

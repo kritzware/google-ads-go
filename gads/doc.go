@@ -29,7 +29,7 @@
 //
 // For information about setting deadlines, reusing contexts, and more
 // please visit https://pkg.go.dev/cloud.google.com/go.
-package gads // import "github.com/opteo/google-ads-go"
+package gads // import "github.com/kritzware/google-ads-go"
 
 import (
 	"context"
