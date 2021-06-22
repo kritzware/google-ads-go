@@ -1,4 +1,4 @@
-module google-ads-go
+module github.com/kritzware/google-ads-go
 
 go 1.16
 
