@@ -2,13 +2,10 @@
     Google Ads Go
 </p>
 
+![](opteo-dev.jpeg)
+
 <p align="center">
   Unofficial Google Ads API client library for Golang
-</p>
-<p align="center">
-  <a href="https://developers.google.com/google-ads/api/docs/release-notes">
-    <img src="https://img.shields.io/badge/google%20ads-v8-009688.svg?style=flat-square">
-  </a>
 </p>
 
 <p align="center">
