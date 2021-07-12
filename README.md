@@ -1,12 +1,10 @@
-<p align="center" style="font-size:32px">
-    Google Ads Go
-</p>
+<h1 align="center">Google Ads Go</h1>
 
 ![](opteo-dev.jpeg)
 
-<p align="center">
+<h4 align="center">
   Unofficial Google Ads API client library for Golang
-</p>
+</h4>
 
 <p align="center">
   <a href="https://opteo.com">
