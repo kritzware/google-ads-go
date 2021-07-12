@@ -21,9 +21,9 @@
 package resources
 
 import (
-	common "github.com/kritzware/google-ads-go/common"
-	enums "github.com/kritzware/google-ads-go/enums"
-	errors "github.com/kritzware/google-ads-go/errors"
+	common "github.com/opteo/google-ads-go/common"
+	enums "github.com/opteo/google-ads-go/enums"
+	errors "github.com/opteo/google-ads-go/errors"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"

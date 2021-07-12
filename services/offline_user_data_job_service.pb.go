@@ -22,8 +22,8 @@ package services
 
 import (
 	context "context"
-	common "github.com/kritzware/google-ads-go/common"
-	resources "github.com/kritzware/google-ads-go/resources"
+	common "github.com/opteo/google-ads-go/common"
+	resources "github.com/opteo/google-ads-go/resources"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	longrunning "google.golang.org/genproto/googleapis/longrunning"
 	status "google.golang.org/genproto/googleapis/rpc/status"

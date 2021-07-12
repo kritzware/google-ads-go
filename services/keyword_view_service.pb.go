@@ -22,7 +22,7 @@ package services
 
 import (
 	context "context"
-	resources "github.com/kritzware/google-ads-go/resources"
+	resources "github.com/opteo/google-ads-go/resources"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"

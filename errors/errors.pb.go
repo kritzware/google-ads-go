@@ -21,8 +21,8 @@
 package errors
 
 import (
-	common "github.com/kritzware/google-ads-go/common"
-	enums "github.com/kritzware/google-ads-go/enums"
+	common "github.com/opteo/google-ads-go/common"
+	enums "github.com/opteo/google-ads-go/enums"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"

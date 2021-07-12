@@ -22,8 +22,8 @@ package services
 
 import (
 	context "context"
-	enums "github.com/kritzware/google-ads-go/enums"
-	resources "github.com/kritzware/google-ads-go/resources"
+	enums "github.com/opteo/google-ads-go/enums"
+	resources "github.com/opteo/google-ads-go/resources"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
