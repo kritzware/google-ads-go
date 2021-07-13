@@ -1,51 +1,27 @@
-ADS_VERSION=v0
-PROTO_ROOT_DIR=googleapis/
-PROTO_SRC_DIR=/google/ads/googleads/$(ADS_VERSION)/**/*.proto
-PROTO_OUT_DIR=$$GOPATH/src/github.com/kritzware/google-ads-go/
-PKG_PATH=paths=source_relative
-PROTOC_GO_ARGS=--go_out=plugins=grpc,$(PKG_PATH):$(PROTO_OUT_DIR)
+GOOGLE_ADS_VERSION=v8
 
-ENTRY=main.go
-BIN=gads
+protos: build clean copy fix-imports
 
 build:
-	go build -o $$GOPATH/bin/$(BIN) $(ENTRY)
+	DOCKER_BUILDKIT=1 docker build \
+		--build-arg GOOGLE_ADS_VERSION=${GOOGLE_ADS_VERSION} \
+		--progress=plain \
+		-t opteo/google-ads-go .
+	
+copy:
+	docker create --name gads opteo/google-ads-go
+	docker cp gads:/build $(PWD)
+	docker rm gads
+	chmod 700 $(PWD)/build
+	cp -r build/google.golang.org $(PWD)
+	cp -r build/github.com/opteo/google-ads-go/* gads/
+	rm -rf build
 
-run:
-	go run $(ENTRY)
+clean:
+	rm -rf build gads && mkdir build gads
 
-run-debug:
-	GODEBUG=http2debug=2 GRPC_GO_LOG_SEVERITY_LEVEL=info GRPC_GO_LOG_VERBOSITY_LEVEL=2 go run $(ENTRY)
+fix-imports:
+	sh ./scripts/fix-package-imports.sh ${GOOGLE_ADS_VERSION}
+	go mod tidy
 
-test:
-	go test -v -cover ./...
-
-.SILENT protos: clean-protos clean-gen-protos
-	echo "converting protos for version $(ADS_VERSION)"
-	for file in $(PROTO_ROOT_DIR)$(PROTO_SRC_DIR); do \
-		echo "converting proto $$(basename $$file)"; \
-		protoc -I=$(PROTO_ROOT_DIR) $(PROTOC_GO_ARGS) $$file; \
-	done; \
-	sh ./fix-package-paths.sh; \
-	rm -rf google/
-	@echo "built proto files to $$(basename $(PROTO_OUT_DIR))"
-
-clean-protos:
-	rm -rf common/
-	rm -rf enums/
-	rm -rf errors/
-	rm -rf resources/
-	rm -rf services/
-
-clean-gen-protos:
-	rm -rf google/
-
-clone-googleapis:
-	cd $(PROTO_ROOT_DIR)
-	git submodule update --init --recursive
-
-update-googleapis:
-	cd $(PROTO_ROOT_DIR)
-	git submodule update --recursive --remote
-
-.PHONY: protos clone-googleapis update-googleapis
+.PHONY: protos build copy clean fix-imports

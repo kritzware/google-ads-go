@@ -12,3 +12,6 @@
 *.out
 
 google-ads.json
+
+# TODO: remove me
+main.go
